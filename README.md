@@ -1,5 +1,7 @@
 # Bitbucket Server MCP
 
+![Bitbucket Server MCP Infographic](assets/infographic.png)
+
 MCP (Model Context Protocol) server for Bitbucket Server Pull Request management. This server provides tools and resources to interact with the Bitbucket Server API through the MCP protocol.
 
 ## Requirements
