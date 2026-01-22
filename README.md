@@ -108,6 +108,7 @@ Parameters:
 - `repository` (required): Repository slug
 - `prId` (required): Pull request ID
 
+<!--
 ### `list_repositories`
 
 Lists repositories in a project.
@@ -115,7 +116,9 @@ Lists repositories in a project.
 Parameters:
 
 - `project`: Bitbucket project key (defaults to BITBUCKET_DEFAULT_PROJECT if set)
+-->
 
+<!--
 ### `list_branches`
 
 Lists branches in a repository.
@@ -124,6 +127,7 @@ Parameters:
 
 - `project`: Bitbucket project key (defaults to BITBUCKET_DEFAULT_PROJECT if set)
 - `repository` (required): Repository slug
+-->
 
 ## Dependencies
 

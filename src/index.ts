@@ -245,29 +245,31 @@ class BitbucketServer {
           }
         }
         ,
-        {
-          name: 'list_repositories',
-          description: 'List repositories in a project',
-          inputSchema: {
-            type: 'object',
-            properties: {
-              project: { type: 'string', description: 'Bitbucket project key' }
-            },
-            required: ['project']
-          }
-        },
-        {
-          name: 'list_branches',
-          description: 'List branches in a repository',
-          inputSchema: {
-            type: 'object',
-            properties: {
-              project: { type: 'string', description: 'Bitbucket project key' },
-              repository: { type: 'string', description: 'Repository slug' }
-            },
-            required: ['repository']
-          }
-        }
+        /* TODO: Enable these tools once they are fixed. Currently not working.
+                {
+                  name: 'list_repositories',
+                  description: 'List repositories in a project',
+                  inputSchema: {
+                    type: 'object',
+                    properties: {
+                      project: { type: 'string', description: 'Bitbucket project key' }
+                    },
+                    required: ['project']
+                  }
+                },
+                {
+                  name: 'list_branches',
+                  description: 'List branches in a repository',
+                  inputSchema: {
+                    type: 'object',
+                    properties: {
+                      project: { type: 'string', description: 'Bitbucket project key' },
+                      repository: { type: 'string', description: 'Repository slug' }
+                    },
+                    required: ['repository']
+                  }
+                }
+                */
       ]
     }));
 
@@ -298,15 +300,17 @@ class BitbucketServer {
               );
             }
             return await this.createPullRequest(args);
-          case 'list_repositories':
-            return await this.listRepositories({
-              project: (args.project as string) ?? this.config.defaultProject
-            });
-          case 'list_branches':
-            return await this.listBranches({
-              project: (args.project as string) ?? this.config.defaultProject,
-              repository: args.repository as string
-            });
+          /* TODO: Enable these tools once they are fixed. Currently not working.
+                    case 'list_repositories':
+                      return await this.listRepositories({
+                        project: (args.project as string) ?? this.config.defaultProject
+                      });
+                    case 'list_branches':
+                      return await this.listBranches({
+                        project: (args.project as string) ?? this.config.defaultProject,
+                        repository: args.repository as string
+                      });
+                    */
           case 'get_pull_request':
             return await this.getPullRequest(pullRequestParams);
           case 'merge_pull_request':
@@ -344,37 +348,39 @@ class BitbucketServer {
     });
   }
 
-  private async listRepositories(params: ListRepositoriesParams) {
-    if (!params.project) {
-      throw new McpError(
-        ErrorCode.InvalidParams,
-        'Project must be provided either as a parameter or through BITBUCKET_DEFAULT_PROJECT environment variable'
+  /* TODO: Enable these tools once they are fixed. Currently not working.
+    private async listRepositories(params: ListRepositoriesParams) {
+      if (!params.project) {
+        throw new McpError(
+          ErrorCode.InvalidParams,
+          'Project must be provided either as a parameter or through BITBUCKET_DEFAULT_PROJECT environment variable'
+        );
+      }
+      const response = await this.api.get(
+        `/projects/${params.project}/repos`
       );
+  
+      return {
+        content: [{ type: 'text', text: JSON.stringify(response.data, null, 2) }]
+      };
     }
-    const response = await this.api.get(
-      `/projects/${params.project}/repos`
-    );
-
-    return {
-      content: [{ type: 'text', text: JSON.stringify(response.data, null, 2) }]
-    };
-  }
-
-  private async listBranches(params: ListBranchesParams) {
-    if (!params.project) {
-      throw new McpError(
-        ErrorCode.InvalidParams,
-        'Project must be provided either as a parameter or through BITBUCKET_DEFAULT_PROJECT environment variable'
+  
+    private async listBranches(params: ListBranchesParams) {
+      if (!params.project) {
+        throw new McpError(
+          ErrorCode.InvalidParams,
+          'Project must be provided either as a parameter or through BITBUCKET_DEFAULT_PROJECT environment variable'
+        );
+      }
+      const response = await this.api.get(
+        `/projects/${params.project}/repos/${params.repository}/branches`
       );
+  
+      return {
+        content: [{ type: 'text', text: JSON.stringify(response.data, null, 2) }]
+      };
     }
-    const response = await this.api.get(
-      `/projects/${params.project}/repos/${params.repository}/branches`
-    );
-
-    return {
-      content: [{ type: 'text', text: JSON.stringify(response.data, null, 2) }]
-    };
-  }
+    */
 
   private async createPullRequest(input: PullRequestInput) {
     const response = await this.api.post(
